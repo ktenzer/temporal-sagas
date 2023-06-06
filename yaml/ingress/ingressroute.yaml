@@ -1,0 +1,20 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  labels:
+    app: temporal-booking-ui
+  name: ingressroute-temporal-booking
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`booking.tmprl-demo.cloud`)
+    services:
+    - name: ui
+      passHostHeader: true
+      port: 5000
+      responseForwarding:
+        flushInterval: 100ms
+  tls:
+    secretName: booking-tmprl-demo-cloud-tls

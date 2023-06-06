@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temporal-booking-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: temporal-booking-worker
+  template:
+    metadata:
+      labels:
+        app: temporal-booking-worker
+    spec:
+      containers:
+      - name: worker
+        image: ktenzer/temporal-booking-worker:v1.2
+        imagePullPolicy: Always
+        env:
+        - name: TEMPORAL_HOST_URL
+          value: temporal-booking.sdvdw.tmprl.cloud:7233
+        - name: TEMPORAL_NAMESPACE
+          value: temporal-booking.sdvdw
+        - name: TEMPORAL_WORKER_METRICS_PORT
+          value: "9090"              
+        - name: TEMPORAL_MTLS_TLS_CERT
+          value: /etc/certs/tls.crt
+        - name: TEMPORAL_MTLS_TLS_KEY
+          value: /etc/certs/tls.key
+        volumeMounts:
+        - mountPath: /etc/certs
+          name: certs
+      volumes:
+      - name: certs
+        secret:
+          defaultMode: 420
+          secretName: temporal-booking-tls

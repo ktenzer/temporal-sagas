@@ -60,7 +60,7 @@ async def book_vacation():
         )
     else:
         client = await Client.connect("localhost:7233")
-
+    
     result = await client.execute_workflow(
         BookWorkflow.run,
         input,

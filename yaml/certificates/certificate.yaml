@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: booking-tmprl-demo-cloud
+spec:
+  secretName: booking-tmprl-demo-cloud-tls
+  privateKey:
+    rotationPolicy: Always
+  dnsNames:
+  - booking.tmprl-demo.cloud
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+    group: cert-manager.io
